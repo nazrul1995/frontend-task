@@ -78,9 +78,9 @@ const FeaturedWork = () => {
           {content.map((item, index) => (
             <div 
               key={index} 
-              className="text-panel min-h-screen flex flex-col justify-center opacity-20 -translate-x-10"
+              className="text-panel min-h-screen flex flex-col justify-center opacity-20 -translate-x-3"
             >
-              <h2 className="hover-target text-5xl md:text-7xl font-black mb-6 tracking-tighter">
+              <h2 className="hover-target text-5xl md:text-7xl font-black tracking-tighter">
                 {item.title}
               </h2>
               <p className="text-xl text-zinc-400 max-w-md font-medium leading-relaxed">
