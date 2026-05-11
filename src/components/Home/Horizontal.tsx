@@ -5,13 +5,12 @@ import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 
 const Horizontal = () => {
-  const sectionRef = useRef(null);
-  const marqueeRef = useRef(null);
-  const buttonRef = useRef(null);
+  const sectionRef = useRef<HTMLElement | null>(null);
+  const marqueeRef = useRef<HTMLDivElement | null>(null);
+  const buttonRef = useRef<HTMLDivElement | null>(null);
 
   useGSAP(() => {
     const ctx = gsap.context(() => {
-
       // Marquee animation
       gsap.to(marqueeRef.current, {
         xPercent: -50,
@@ -23,19 +22,24 @@ const Horizontal = () => {
       const section = sectionRef.current;
       const button = buttonRef.current;
 
+      if (!section || !button) return;
+
       // Hide initially
-      gsap.set(button, { opacity: 0, scale: 0.8 });
+      gsap.set(button, {
+        opacity: 0,
+        scale: 0.8,
+      });
 
       // Mouse move handler
-      const moveButton = (e) => {
+      const moveButton = (e: MouseEvent) => {
         const rect = section.getBoundingClientRect();
 
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
 
         gsap.to(button, {
-          x: x,
-          y: y,
+          x,
+          y,
           duration: 0.4,
           ease: 'power3.out',
         });
@@ -68,7 +72,6 @@ const Horizontal = () => {
         section.removeEventListener('mouseenter', handleEnter);
         section.removeEventListener('mouseleave', handleLeave);
       };
-
     }, sectionRef);
 
     return () => ctx.revert();
@@ -77,15 +80,14 @@ const Horizontal = () => {
   return (
     <section
       ref={sectionRef}
-      className="bg-[#eee] py-40 overflow-hidden relative select-none"
+      className="relative overflow-hidden bg-[#eee] py-40 select-none"
     >
-
       {/* Floating Button */}
       <div
         ref={buttonRef}
-        className="pointer-events-none absolute top-0 left-0 z-30"
+        className="pointer-events-none absolute left-0 top-0 z-30"
       >
-        <button className="bg-[#A7F3D0] text-black px-8 py-4 rounded-full font-bold text-lg shadow-xl whitespace-nowrap">
+        <button className="whitespace-nowrap rounded-full bg-[#A7F3D0] px-8 py-4 text-lg font-bold text-black shadow-xl">
           Send Us Your Brief ↗
         </button>
       </div>
@@ -94,7 +96,7 @@ const Horizontal = () => {
       <div className="overflow-hidden">
         <div
           ref={marqueeRef}
-          className="flex whitespace-nowrap gap-16 will-change-transform"
+          className="flex gap-16 whitespace-nowrap will-change-transform"
         >
           <MarqueeText />
           <MarqueeText />
@@ -106,20 +108,22 @@ const Horizontal = () => {
 
 const MarqueeText = () => {
   return (
-    <div className="flex items-center gap-16 shrink-0">
-      <h2 className="text-[20vw] font-black tracking-tighter leading-none flex items-center gap-8">
+    <div className="flex shrink-0 items-center gap-16">
+      <h2 className="flex items-center gap-8 text-[20vw] font-black leading-none tracking-tighter">
         Chasing
-        <div className="h-[0.8em] w-[1.2em] overflow-hidden rounded-[2vw] border-4 border-white shadow-2xl rotate-[-2deg]">
+
+        <div className="h-[0.8em] w-[1.2em] rotate-[-2deg] overflow-hidden rounded-[2vw] border-4 border-white shadow-2xl">
           <img
             src="https://images.unsplash.com/photo-1501333198107-b369651590c8?auto=format&fit=crop&q=80&w=600"
             alt="Chasing"
-            className="object-cover h-full w-full"
+            className="h-full w-full object-cover"
           />
         </div>
+
         Connections
       </h2>
 
-      <h2 className="text-[20vw] font-black tracking-tighter leading-none opacity-20">
+      <h2 className="text-[20vw] font-black leading-none tracking-tighter opacity-20">
         Chasing Connections
       </h2>
     </div>
